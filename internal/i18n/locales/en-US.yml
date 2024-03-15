@@ -152,6 +152,7 @@ header.menu.light: Light
 header.menu.dark: Dark
 header.menu.system: System
 footer.powered-by: Powered by %s
+footer.and: and %s
 
 pagination.older: Older
 pagination.newer: Newer
