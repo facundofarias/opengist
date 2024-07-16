@@ -4,21 +4,24 @@ services:
 
   # The PostgreSQL database.
   db:
-    image: postgres:13.3
+    image: postgres:15
     restart: unless-stopped
     environment:
       POSTGRES_USER: opengist
       POSTGRES_PASSWORD: opengist
       POSTGRES_DB: opengist
     volumes:
-      - db:/var/lib/postgresql/data
+      - ./opengist/db:/var/lib/postgresql/data
     networks:
       - backend
+    command: ["postgres", "-c", "log_statement=all"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 5s
+      start_interval: 3s
 
   # The core service written in Go.
   core: 
@@ -26,6 +29,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    volumes:
+      - ./opengist/opengist:/opengist
     environment:
       OG_DB_URL: "host=db user=opengist password=opengist dbname=opengist sslmode=disable"
     depends_on:
@@ -40,7 +45,3 @@ services:
 networks:
   backend:
     internal: true
-
-
-volumes:
-  db:
