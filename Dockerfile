@@ -43,7 +43,7 @@ FROM base AS build
 RUN make
 
 
-FROM alpine:3.19 as prod
+FROM alpine:3.19 AS prod
 
 RUN apk update && \
     apk add --no-cache \
