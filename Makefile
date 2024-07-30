@@ -2,7 +2,7 @@
 
 go_mod:
 	@if [ ! -f go.mod ]; then \
-		go mod init <module-name>; \
+		go mod init github.com/thomiceli/opengist; \
 	fi
 	go mod tidy
 	go mod download
