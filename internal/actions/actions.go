@@ -17,12 +17,12 @@ type ActionStatus struct {
 }
 
 const (
-	SyncReposFromFS  = iota
-	SyncReposFromDB  = iota
-	GitGcRepos       = iota
-	SyncGistPreviews = iota
-	ResetHooks       = iota
-	IndexGists       = iota
+	SyncReposFromFS = iota
+	SyncReposFromDB
+	GitGcRepos
+	SyncGistPreviews
+	ResetHooks
+	IndexGists
 )
 
 var (
@@ -74,7 +74,7 @@ func Run(actionType int) {
 	case IndexGists:
 		functionToRun = indexGists
 	default:
-		panic("unhandled default case")
+		log.Error().Msg("Unknown action type")
 	}
 
 	functionToRun()
