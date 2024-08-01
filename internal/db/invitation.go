@@ -15,9 +15,18 @@ type Invitation struct {
 
 func GetAllInvitations() ([]*Invitation, error) {
 	var invitations []*Invitation
+
+	nowFunc := "strftime('%s', 'now')" // Default to SQLite
+	if db.Dialector.Name() == "postgres" {
+		nowFunc = "extract(epoch from now())"
+	} else if db.Dialector.Name() == "mysql" {
+		nowFunc = "UNIX_TIMESTAMP()"
+	}
+
 	err := db.
-		Order("(((expires_at >= strftime('%s', 'now')) AND ((nb_max <= 0) OR (nb_used < nb_max)))) desc").
-		Order("id asc").
+		Order("(CASE WHEN expires_at >= " + nowFunc + " THEN 1 ELSE 0 END) DESC").
+		Order("(CASE WHEN nb_max = 0 OR nb_used < nb_max THEN 1 ELSE 0 END) DESC").
+		Order("id ASC").
 		Find(&invitations).Error
 
 	return invitations, err
