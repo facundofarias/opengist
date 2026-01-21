@@ -1,4 +1,7 @@
-RUN make
+FROM alpine:3.19
 
-# Intentional failure for testing
-RUN echo "Failing build on purpose" && exit 1
+RUN echo "Step 1: installing tools..." \
+  && apk add --no-cache curl
+
+RUN echo "Step 2: intentional failure for testing" \
+  && exit 1
