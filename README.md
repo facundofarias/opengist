@@ -117,5 +117,6 @@ The documentation is available in [/docs](/docs) directory.
 
 
 ## License
+TEST
 
 Opengist is licensed under the [AGPL-3.0 license](/LICENSE).
